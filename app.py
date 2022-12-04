@@ -15,13 +15,12 @@ import plotly.io as pio
 from dash import ALL, MATCH, Dash, Input, Output, State, dcc, html
 from dash.dash_table import DataTable, FormatTemplate
 from dash.dash_table.Format import Format, Scheme, Symbol, Trim
-from dash_extensions.enrich import DashProxy, Input, MultiplexerTransform, Output
+from dash_extensions.enrich import DashProxy, MultiplexerTransform
 
 from columns import *
 from labels import *
 from styles import *
 
-from flask_frozen import Freezer
 
 pio.kaleido.scope.mathjax = None
 pio.kaleido.scope.default_format = "pdf"
@@ -650,14 +649,5 @@ def Download(btn, suitnames, scope, *graphs):
     figs[-1].write_image(f"{suitnames}_idle_power.pdf")
 
 
-# @app.callback(
-#     Input()
-
-# )
-# def update_graphs():
-
-##BLOCK main
-# freezer = Freezer(app)
 if __name__ == "__main__":
     app.run_server(debug=True)
-    # freezer.freeze()
