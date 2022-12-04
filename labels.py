@@ -31,7 +31,7 @@ testtypes = {
 performance_metrics = [
     "latencyAvg",
     "totalRequests",
-    "rps",
+    "RPS",
 ]
 cpu_metrics = ["cpu", "av_power_cpu", "av_cpu_per_request"]
 dram_metrics = [

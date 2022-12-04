@@ -54,6 +54,7 @@ def load_data(filename="recap_frameworkbenchmark.csv"):
     data["scenario"] = data.apply(
         lambda row: "idle" if row["level"] == 0 else row["scenario"], axis=1
     )
+    data["RPS"] = data["totalRequests"] / DURATION
 
     return data
 
@@ -477,6 +478,8 @@ def select_rows(secondTable, checked, rows):
     Output(infoSecondTable, "children"),
 )
 def select_scope(scope, selected_scenario, selected_langauges, selected_categories):
+    # if len(selected_langauges) == 0:
+    #     return
     data = df.loc[df["language"].isin(selected_langauges)]
     data = data.loc[
         data["scenario"] == selected_scenario,
@@ -542,7 +545,7 @@ def update_graphs(
         basecolumns + cpu_metrics if scope == "cpu" else basecolumns + dram_metrics
     )
     metrics = [
-        "totalRequests",
+        "RPS",
         "latencyAvg",
         f"av_{scope}_per_request",
         f"av_power_{scope}",
@@ -602,7 +605,7 @@ def update_graphs(
         ),
         dict(
             id="language",
-            name="Lnangauge",
+            name="Langauge",
         ),
         dict(
             id="level",
@@ -638,7 +641,7 @@ def Download(btn, suitnames, scope, *graphs):
     # TODO : ADD other formats png svg ..etc
     # TODO : add radar plot for comparaison
     metrics = [
-        "totalRequests",
+        "RPS",
         "latencyAvg",
         f"av_{scope}_per_request",
         f"av_power_{scope}",

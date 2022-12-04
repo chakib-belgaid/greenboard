@@ -7,7 +7,7 @@ columns_name = [
     ),
     dict(
         id="language",
-        name="Lnangauge",
+        name="Langauge",
     ),
     dict(
         id="level",
@@ -53,8 +53,8 @@ columns_performance = [
         ),
     ),
     dict(
-        id="totalRequests",
-        name="Total Requests",
+        id="RPS",
+        name="RPS",
         type="numeric",
         format=Format(precision=2, scheme=Scheme.decimal_si_prefix),
     ),
