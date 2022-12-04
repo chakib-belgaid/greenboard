@@ -150,19 +150,19 @@ graphs_idle_power = dcc.Graph(
 languages = [{"label": lang, "value": lang} for lang in df["language"].unique()]
 languagesDIV = html.Div(
     [
-        html.Div(
-            languages_list := dbc.Checklist(
-                options=languages,
-                class_name="btn-group col-12",
-                input_class_name="btn-check ",
-                label_class_name="btn btn-outline-primary check-labels col-12",
-                # label_checked_class_name="active",
-                value=["crystal"],
-            ),
-            className="radio-group col-12",
+        # using bootstrap make this list of checkboxes fit with the rest of the page
+        languages_list := dbc.Checklist(
+            options=languages,
+            class_name=" btn-group flex-wrap  ",
+            input_class_name="btn-check ",
+            label_class_name="btn  btn-outline-primary check-labels col-12",
+            # label_checked_class_name="active",
+            value=["php"],
+            label_style={"min-width": "120px", "margin-bottom": "5px"}
+            # inline=True,
         ),
     ],
-    className="row languages-category ",
+    className=" languages-category  d-flex flex-wrap  ",
 )
 
 
