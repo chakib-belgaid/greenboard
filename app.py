@@ -5,7 +5,7 @@ import itertools
 import json
 import math
 from collections import OrderedDict
-
+import os
 import dash
 import dash_bootstrap_components as dbc
 import matplotlib as mpl
@@ -478,8 +478,7 @@ def select_rows(secondTable, checked, rows):
     Output(infoSecondTable, "children"),
 )
 def select_scope(scope, selected_scenario, selected_langauges, selected_categories):
-    # if len(selected_langauges) == 0:
-    #     return
+
     data = df.loc[df["language"].isin(selected_langauges)]
     data = data.loc[
         data["scenario"] == selected_scenario,
@@ -646,10 +645,14 @@ def Download(btn, suitnames, scope, *graphs):
         f"av_{scope}_per_request",
         f"av_power_{scope}",
     ]
+    try:
+        os.mkdir(f"{suitnames}")
+    except FileExistsError:
+        pass
     figs = [go.Figure(g) for g in graphs]
     for fig, metric in zip(figs[:-1], metrics):
-        fig.write_image(f"{suitnames}_line_plot_{metric}.pdf")
-    figs[-1].write_image(f"{suitnames}_idle_power.pdf")
+        fig.write_image(f"{suitnames}/line_plot_{metric}.pdf")
+    figs[-1].write_image(f"{suitnames}/idle_power.pdf")
 
 
 if __name__ == "__main__":
