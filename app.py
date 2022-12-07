@@ -16,6 +16,7 @@ from dash import ALL, MATCH, Dash, Input, Output, State, dcc, html
 from dash.dash_table import DataTable, FormatTemplate
 from dash.dash_table.Format import Format, Scheme, Symbol, Trim
 from dash_extensions.enrich import DashProxy, MultiplexerTransform
+import shutil
 
 from columns import *
 from labels import *
@@ -267,19 +268,22 @@ rawTableDIV = html.Div(
 )
 # DownloadBtn := html.Button("Download"),
 downloadDiv = html.Div(
-    html.Div(
-        dbc.InputGroup(
-            [
-                DownloadBtn := dbc.Button("Download"),
-                testsuitname := dbc.Input(
-                    placeholder="testsuit", class_name="col-xs-3"
-                ),
-                dbc.InputGroupText(".pdf"),
-            ],
-            className="",
+    [
+        html.Div(
+            dbc.InputGroup(
+                [
+                    DownloadBtn := dbc.Button("Download"),
+                    testsuitname := dbc.Input(
+                        placeholder="testsuit", class_name="col-xs-3"
+                    ),
+                    dbc.InputGroupText(".pdf"),
+                ],
+                className="",
+            ),
+            className="col-8 ",
         ),
-        className="col-8 ",
-    ),
+        downloader := dcc.Download(),
+    ]
 )
 
 
@@ -633,7 +637,7 @@ import plotly.graph_objects as go
     State(graphs_energy_request, "figure"),
     State(graphs_av_power, "figure"),
     State(graphs_idle_power, "figure"),
-    Output("placeholder", "children"),
+    Output(downloader, "data"),
     prevent_initial_call=True,
 )
 def Download(btn, suitnames, scope, *graphs):
@@ -653,6 +657,12 @@ def Download(btn, suitnames, scope, *graphs):
     for fig, metric in zip(figs[:-1], metrics):
         fig.write_image(f"{suitnames}/line_plot_{metric}.pdf")
     figs[-1].write_image(f"{suitnames}/idle_power.pdf")
+    # download the directory as zip file and delete it
+    shutil.make_archive(suitnames, "zip", suitnames)
+    shutil.rmtree(suitnames)
+    files = dcc.send_file(f"{suitnames}.zip")
+    os.remove(path=f"{suitnames}.zip")
+    return files
 
 
 if __name__ == "__main__":
